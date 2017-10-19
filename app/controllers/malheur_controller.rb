@@ -1,7 +1,11 @@
 class MalheurController < ApplicationController
   def home
-    @clusters = Cluster.all.to_json
-    @samples  = Sample.all.to_json
+    data = { clusters: Cluster.all, samples: Sample.all.order('prototype desc') }
+
+    respond_to do |format|
+      format.html
+      format.json { render json: data }
+    end
   end
 
   def import
