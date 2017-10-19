@@ -3,7 +3,7 @@ class Malheur
     self.clean_previous_clusters_and_samples
 
     @parsed_data = { clusters: [], samples: [] }
-    
+
     DATA.each_line do |line|
       line = line.strip
       next if line.starts_with? '#'
