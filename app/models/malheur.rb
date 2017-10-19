@@ -1,6 +1,6 @@
 class Malheur
-  def self.get_parsed_data(malware_data)
-    parsed_data = { clusters: [], samples: [] }
+  def self.parse(malware_data)
+    @parsed_data = { clusters: [], samples: [] }
     malware_data.each_line do |line|
       next if line.starts_with? '#'
       splitted_line = line.split
@@ -10,8 +10,8 @@ class Malheur
       prototype = splitted_line[2]
       distance  = splitted_line[3]
 
-      unless cluster == 'rejected' && !parsed_data[:clusters].include?(cluster)
-        parsed_data[:clusters] << cluster
+      unless cluster == 'rejected' && !@parsed_data[:clusters].include?(cluster)
+        @parsed_data[:clusters] << cluster
       end
 
       sample = {
@@ -21,20 +21,20 @@ class Malheur
         distance: distance
       }
       sample[:prototype] = prototype?(sample)
-      parsed_data[:samples] << sample
+      @parsed_data[:samples] << sample
     end
-    parsed_data
   end
 
-  def self.create_clusters(clusters)
-
-
+  def self.create_clusters
+    @parsed_data[:clusters].each do |cluster|
+      Cluster.create malware_id: cluster
+    end
   end
 
-  def self.create_samples(samples)
-  end
-
-  def self.parse
+  def self.create_samples
+    @parsed_data[:samples].each do |sample|
+      Sample.create sample
+    end
   end
 
   def prototype?(sample)
