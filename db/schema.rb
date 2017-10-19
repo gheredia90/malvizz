@@ -21,7 +21,6 @@ ActiveRecord::Schema.define(version: 20171019165608) do
 
   create_table "samples", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "cluster_malheur_id"
-    t.string "malheur_id"
     t.boolean "prototype"
     t.float "distance", limit: 24
     t.string "report"

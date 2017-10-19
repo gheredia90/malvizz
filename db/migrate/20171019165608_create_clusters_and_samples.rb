@@ -9,7 +9,6 @@ class CreateClustersAndSamples < ActiveRecord::Migration[5.1]
 
     create_table :samples do |t|
       t.string  :cluster_malheur_id
-      t.string  :malheur_id
       t.boolean :prototype
       t.float   :distance
       t.string  :report

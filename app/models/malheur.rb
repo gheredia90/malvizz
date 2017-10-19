@@ -1,6 +1,9 @@
 class Malheur
   def self.parse(malware_data)
+    self.clean_previous_clusters_and_samples
+
     @parsed_data = { clusters: [], samples: [] }
+    
     DATA.each_line do |line|
       line = line.strip
       next if line.starts_with? '#'
@@ -43,6 +46,11 @@ class Malheur
 
   def self.prototype?(sample)
     sample[:report] == sample[:prototype] && sample[:distance].to_i.zero?
+  end
+
+  def self.clean_previous_clusters_and_samples
+    Cluster.destroy_all
+    Sample.destroy_all
   end
 
   DATA =
