@@ -1,6 +1,7 @@
 class Malheur
 
   def self.parse(malware_data = nil)
+    parsed_data = { clusters: [], samples: [] }
     data = "
       # MALHEUR (0.6.0) - Automatic Analysis of Malware Behavior
       # Copyright (c) 2009-2015 Konrad Rieck (konrad@mlsec.org)
@@ -81,8 +82,7 @@ class Malheur
     "
     data.each_line do |line|
       next if line.starts_with? '#'
-      parsed_data = {}
-      
+
     end
   end
 end
