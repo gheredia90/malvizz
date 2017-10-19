@@ -1,0 +1,2 @@
+module MalheurControllerHelper
+end
