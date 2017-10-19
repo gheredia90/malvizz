@@ -1,7 +1,48 @@
 class Malheur
-
-  def self.parse(malware_data = nil)
+  def self.get_parsed_data(malware_data)
     parsed_data = { clusters: [], samples: [] }
+    malware_data.each_line do |line|
+      next if line.starts_with? '#'
+      splitted_line = line.split
+      next unless splitted_line.size == 4
+      report    = splitted_line[0]
+      cluster   = splitted_line[1]
+      prototype = splitted_line[2]
+      distance  = splitted_line[3]
+
+      unless cluster == 'rejected' && !parsed_data[:clusters].include?(cluster)
+        parsed_data[:clusters] << cluster
+      end
+
+      sample = {
+        malheur_cluster_id: cluster,
+        report: report,
+        prototype: prototype,
+        distance: distance
+      }
+      sample[:prototype] = prototype?(sample)
+      parsed_data[:samples] << sample
+    end
+    parsed_data
+  end
+
+  def self.create_clusters(clusters)
+
+
+  end
+
+  def self.create_samples(samples)
+  end
+
+  def self.parse
+  end
+
+  def prototype?(sample)
+    sample[:report] == sample[:prototype] && sample[:distance].zero?
+  end
+
+  private
+  def malware_data
     data = "
       # MALHEUR (0.6.0) - Automatic Analysis of Malware Behavior
       # Copyright (c) 2009-2015 Konrad Rieck (konrad@mlsec.org)
@@ -80,9 +121,5 @@ class Malheur
       49.txt rejected 49.txt 0
       80.txt rejected 80.txt 0.000376246
     "
-    data.each_line do |line|
-      next if line.starts_with? '#'
-
-    end
   end
 end
