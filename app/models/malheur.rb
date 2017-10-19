@@ -1,6 +1,6 @@
 class Malheur
 
-  def self.parse(malware_data)
+  def self.parse(malware_data = nil)
     data = "
       # MALHEUR (0.6.0) - Automatic Analysis of Malware Behavior
       # Copyright (c) 2009-2015 Konrad Rieck (konrad@mlsec.org)
@@ -80,9 +80,9 @@ class Malheur
       80.txt rejected 80.txt 0.000376246
     "
     data.each_line do |line|
-      parsed_data = []
-      next if line.starts_with '#'
-
+      next if line.starts_with? '#'
+      parsed_data = {}
+      
     end
   end
 end

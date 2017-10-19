@@ -1,6 +1,3 @@
 class Cluster < ApplicationRecord
-  field :malheur_id, type: String
-  field :name, type: String
-
-  has_many :samples
+  has_many :samples, foreign_key: :cluster_malheur_id, primary_key: :malheur_id
 end
