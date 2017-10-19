@@ -13,6 +13,9 @@ gem 'mysql2'
 gem 'awesome_print'
 gem 'pry'
 gem 'materialize-sass'
+gem 'jquery-rails'
+gem 'd3-rails'
+
 
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
