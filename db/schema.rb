@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20171019165608) do
     t.string "malheur_id"
     t.boolean "prototype"
     t.float "distance", limit: 24
+    t.string "report"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

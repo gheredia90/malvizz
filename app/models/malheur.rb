@@ -1,7 +1,8 @@
 class Malheur
   def self.parse(malware_data)
     @parsed_data = { clusters: [], samples: [] }
-    malware_data.each_line do |line|
+    DATA.each_line do |line|
+      line = line.strip
       next if line.starts_with? '#'
       splitted_line = line.split
       next unless splitted_line.size == 4
@@ -15,19 +16,22 @@ class Malheur
       end
 
       sample = {
-        malheur_cluster_id: cluster,
+        cluster_malheur_id: cluster,
         report: report,
         prototype: prototype,
         distance: distance
       }
-      sample[:prototype] = prototype?(sample)
+      sample[:prototype] = self.prototype?(sample)
       @parsed_data[:samples] << sample
     end
+
+    self.create_clusters unless @parsed_data[:clusters].empty?
+    self.create_samples unless @parsed_data[:samples].empty?
   end
 
   def self.create_clusters
     @parsed_data[:clusters].each do |cluster|
-      Cluster.create malware_id: cluster
+      Cluster.create malheur_id: cluster
     end
   end
 
@@ -37,14 +41,12 @@ class Malheur
     end
   end
 
-  def prototype?(sample)
-    sample[:report] == sample[:prototype] && sample[:distance].zero?
+  def self.prototype?(sample)
+    sample[:report] == sample[:prototype] && sample[:distance].to_i.zero?
   end
 
-  private
-  def malware_data
-    data = "
-      # MALHEUR (0.6.0) - Automatic Analysis of Malware Behavior
+  DATA =
+    " # MALHEUR (0.6.0) - Automatic Analysis of Malware Behavior
       # Copyright (c) 2009-2015 Konrad Rieck (konrad@mlsec.org)
       # University of Goettingen, Berlin Institute of Technology
       # ---
@@ -121,5 +123,4 @@ class Malheur
       49.txt rejected 49.txt 0
       80.txt rejected 80.txt 0.000376246
     "
-  end
 end

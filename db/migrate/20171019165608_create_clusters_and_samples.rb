@@ -12,6 +12,7 @@ class CreateClustersAndSamples < ActiveRecord::Migration[5.1]
       t.string  :malheur_id
       t.boolean :prototype
       t.float   :distance
+      t.string  :report
 
       t.timestamps
     end
