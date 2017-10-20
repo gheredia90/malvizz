@@ -23,8 +23,8 @@ function paintData(samples) {
     var processed = 0; // Elementos procesados
 
     var svg = d3.select("#chart").append("svg").attr("width", width + padding * 2).attr("height", height + padding * 2).append("g").attr("transform", "translate(" + padding + "," + padding + ")");
-    var xScale = d3.scale.linear().range([0, width]).domain([0, Math.sqrt(2)*20]);
-    var yScale = d3.scale.linear().range([height, 0]).domain([0, Math.sqrt(2)*20]);
+    var xScale = d3.scale.linear().range([0, width]).domain([0, Math.sqrt(2)*200]);
+    var yScale = d3.scale.linear().range([height, 0]).domain([0, Math.sqrt(2)*200]);
     var xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(0).tickFormat("");
     var yAxis = d3.svg.axis().scale(yScale).orient("left").tickSize(0).tickFormat("");
 
@@ -39,8 +39,8 @@ function paintData(samples) {
 
       if (prototype) {
         point = {
-          'x': getRandomInt(0, 11),
-          'y': getRandomInt(0, 11)
+          'x': getRandomInt(0, Math.sqrt(2)*200 - 9),
+          'y': getRandomInt(0, Math.sqrt(2)*200 - 9)
         };
 
         core = {

@@ -45,7 +45,8 @@ class Malheur
   end
 
   def self.prototype?(sample)
-    sample[:report] == sample[:prototype] && sample[:distance].to_i.zero?
+    return true if sample[:cluster_malheur_id] == 'rejected'
+    sample[:report] == sample[:prototype] && sample[:distance].to_f.zero?
   end
 
   def self.clean_previous_clusters_and_samples
