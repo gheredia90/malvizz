@@ -17,16 +17,34 @@ function paintData(samples) {
     }
 
     var cores = []; // Núcleos de los clusters
-    var width = 700; // Anchura
+    var width = 1000; // Anchura
     var height = 600; // Altura
     var padding = 25; // Padding
     var processed = 0; // Elementos procesados
+    var measure = Math.sqrt(2)*14
 
     var svg = d3.select("#chart").append("svg").attr("width", width + padding * 2).attr("height", height + padding * 2).append("g").attr("transform", "translate(" + padding + "," + padding + ")");
-    var xScale = d3.scale.linear().range([0, width]).domain([0, Math.sqrt(2)*200]);
-    var yScale = d3.scale.linear().range([height, 0]).domain([0, Math.sqrt(2)*200]);
+    var xScale = d3.scale.linear().range([0, width]).domain([0, measure]);
+    var yScale = d3.scale.linear().range([height, 0]).domain([0, measure]);
     var xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(0).tickFormat("");
     var yAxis = d3.svg.axis().scale(yScale).orient("left").tickSize(0).tickFormat("");
+    function brushended() {
+      var s = d3.event.selection;
+      if (!s) {
+        if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
+        x.domain(x0);
+        y.domain(y0);
+      } else {
+        x.domain([s[0][0], s[1][0]].map(x.invert, x));
+        y.domain([s[1][1], s[0][1]].map(y.invert, y));
+        svg.select(".brush").call(brush.move, null);
+      }
+      zoom();
+    }
+    var brush = d3.brush().on("end", brushended),
+    idleTimeout,
+    idleDelay = 350;
+
 
     samples.forEach(function(d, i, a) {
       var label = d.cluster_malheur_id;
@@ -39,8 +57,8 @@ function paintData(samples) {
 
       if (prototype) {
         point = {
-          'x': getRandomInt(0, Math.sqrt(2)*200 - 9),
-          'y': getRandomInt(0, Math.sqrt(2)*200 - 9)
+          'x': getRandomInt(0, measure - 1),
+          'y': getRandomInt(0, measure - 1)
         };
 
         core = {
@@ -65,6 +83,8 @@ function paintData(samples) {
               'x': core.x,
               'y': core.y
             }
+          } else {
+
           }
         });
       }
@@ -74,8 +94,8 @@ function paintData(samples) {
       }
 
       var colour = isCoreCluster ?
-        'black' :
-        'teal';
+        'red' :
+        'green';
       svg.append("circle").attr("fill", colour).attr("cx", function() {
         return xScale(point.x);
       }).attr("cy", function() {
